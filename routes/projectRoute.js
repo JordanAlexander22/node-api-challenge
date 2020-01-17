@@ -48,6 +48,28 @@ router.put("/:id", validateID, validateProject, (req, res) => {
     });
 });
 
+//delete
+router.delete("/:id", validateID, (req, res) => {
+  Project.remove(req.id)
+    .then(projekt => {
+      res.status(200).json({ message: "Delete successful" });
+    })
+    .catch(err => {
+      res.status(500).json({ message: "Failed to delete project" });
+    });
+});
+
+// get by actionID
+router.get("/:id/actions", validateID, (req, res) => {
+  Project.getProjectActions(req.id)
+    .then(actions => {
+      res.status(200).json(actions);
+    })
+    .catch(err => {
+      res.status(500).json({ message: "Could not retrieve actions" });
+    });
+});
+
 //midware
 function validateID(req, res, next) {
   const { id } = req.params;
